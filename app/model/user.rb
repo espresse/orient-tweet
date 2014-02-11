@@ -4,6 +4,7 @@ class User
   include Virtus.model
   include Veto.validator
   include Oriental::Document
+  include Oriental::Graph::Edge
 
   attr_accessor :password, :password_confirmation
 

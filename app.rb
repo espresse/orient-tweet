@@ -5,11 +5,13 @@ Bundler.require
 require 'orientdb_binary'
 require './config/database'
 require './lib/document'
+require './lib/edge'
+require './lib/vertex'
 require './app/model/user'
 
+set :environment, :development
 
 class OrientTweet < Sinatra::Base
-  attr_accessor :database
   use Rack::Session::Cookie, secret: "crvbgthunji567bvy2wDFWE$%#342fd#dsww}"
   
   # use Rack::Flash, accessorize: [:error, :success]
