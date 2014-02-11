@@ -1,9 +1,6 @@
 require 'bcrypt'
 
 class User
-  include Virtus.model
-  include Veto.validator
-  include Oriental::Document
   include Oriental::Graph::Edge
 
   attr_accessor :password, :password_confirmation
@@ -16,20 +13,22 @@ class User
   validates :username, presence: true
   validates :email, presence: true
 
-  validates :password, presence: true, if: :password_required?
-  validates :password_confirmation, presence: true, if: :password_required?
-  validate :confirmation_of_password, if: :password_required?
-
-  def password_required?(obj)
-    new? or password
-  end
-
-  def confirmation_of_password(obj)
-    errors.add(:password_confirmation, 'should match with password') if password != password_confirmation
+  with_options if: :password_required? do
+    validates :password, presence: true
+    validates :password_confirmation, presence: true
+    validate :confirmation_of_password
   end
 
   before :save, :crypt_password
   before :save, :clear_password_fields
+
+  def password_required?(obj=nil)
+    new? or password
+  end
+
+  def confirmation_of_password(obj=nil)
+    errors.add(:password_confirmation, 'should match with password') if password != password_confirmation
+  end
 
   def crypt_password
     self.crypted_pass = BCrypt::Password.create(password) if password

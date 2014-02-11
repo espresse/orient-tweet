@@ -4,6 +4,7 @@ Bundler.require
 # load the Database and User model
 require 'orientdb_binary'
 require './config/database'
+require './lib/query_builder'
 require './lib/document'
 require './lib/edge'
 require './lib/vertex'
