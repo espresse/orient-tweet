@@ -33,15 +33,25 @@ describe "User" do
   end
 
   describe "new" do
+    before do
+      @user = build(:user)
+    end
 
-    it "should be not valid without password" do
-      user = build(:user)
-      assert !user.valid?
+    it "should be new" do
+      assert @user.new?
+    end
+
+    it "should not be valid without password" do
+      assert !@user.valid?
     end
 
     it "should be valid with password" do
       user = build(:valid_user)
       assert user.valid?
+    end
+
+    it "should require password" do
+      assert @user.password_required?
     end
   end
 end
