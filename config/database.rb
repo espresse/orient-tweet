@@ -5,8 +5,9 @@ class Database
   attr_accessor :database
 
   def initialize
-    srv = {host: 'localhost', port: 2424}
-    @database = OrientdbBinary::Database.new(srv)
-    @database.open(db: 'GratefulDeadConcerts', user: "admin", password: "admin", storage: 'plocal')
+    settings = YAML::load_file(File.join(__dir__, '..', 'config', 'database.yml'))
+    set = setings[:database][ENV['RACK_ENV'].to_sym]
+    @database = OrientdbBinary::Database.new(host: set['host'], port: set['port'])
+    @database.open db: set['db'], user: set['db_user'], password: set['db_password'], storage: set['storage']
   end
 end

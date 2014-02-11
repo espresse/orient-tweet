@@ -1,4 +1,5 @@
 require 'yaml'
+require './app'
 
 namespace :db do
   desc "Create database"

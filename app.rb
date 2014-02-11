@@ -1,16 +1,21 @@
 require 'bundler'
-Bundler.require
 
-# load the Database and User model
+ENV['RACK_ENV'] ||= "development"
+
+Bundler.require(:default, ENV['RACK_ENV'].to_sym)
+
 require 'orientdb_binary'
 require './config/database'
+
+# this are oriental:: classes/modules, they should probably go to own gem(?)
 require './lib/query_builder'
 require './lib/document'
 require './lib/edge'
 require './lib/vertex'
+
 require './app/model/user'
 
-set :environment, :development
+# set :environment, :development
 
 class OrientTweet < Sinatra::Base
   use Rack::Session::Cookie, secret: "crvbgthunji567bvy2wDFWE$%#342fd#dsww}"

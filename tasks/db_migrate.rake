@@ -1,4 +1,5 @@
 require 'yaml'
+require './app'
 
 def modules
   Module.constants.select do |constant_name|
