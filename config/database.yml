@@ -1,0 +1,39 @@
+database:
+  development:
+    host: "localhost"
+    port: 2424
+    db: 'orient-tweet-development'
+    storage: 'plocal'
+    type: 'graph'
+    server_user: 'root'
+    server_password: 'root'
+    db_user: 'admin'
+    db_password: 'admin'
+    db_user_role: 'admin'
+    schema: false
+
+  production:
+    host: "localhost"
+    port: 2424
+    db: 'orient-tweet'
+    storage: 'plocal'
+    type: 'graph'
+    server_user: 'root'
+    server_password: 'root'
+    db_user: 'admin'
+    db_password: 'admin'
+    db_user_role: 'admin'
+    schema: false
+
+  test:
+    host: "localhost"
+    port: 2424
+    db: 'orient-tweet-test  '
+    storage: 'memory'
+    type: 'graph'
+    server_user: 'root'
+    server_password: 'root'
+    db_user: 'admin'
+    db_password: 'admin'
+    db_user_role: 'admin'
+    schema: false
