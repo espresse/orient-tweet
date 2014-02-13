@@ -4,15 +4,8 @@ ENV['RACK_ENV'] ||= "development"
 
 Bundler.require(:default, ENV['RACK_ENV'].to_sym)
 
-require 'orientdb_binary'
-require './config/database'
-
 # this are oriental:: classes/modules, they should probably go to own gem(?)
-require './lib/query_builder'
-require './lib/document'
-require './lib/edge'
-require './lib/vertex'
-
+require './lib/oriental'
 require './app/model/user'
 
 # set :environment, :development
