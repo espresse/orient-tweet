@@ -1,9 +1,8 @@
+ENV['RACK_ENV'] = 'test'
 
 require 'minitest/autorun'
 require 'rack/test'
 require './test/factories/user'
-
-ENV['RACK_ENV'] = 'test'
 
 class MiniTest::Spec
   include FactoryGirl::Syntax::Methods

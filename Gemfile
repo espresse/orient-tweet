@@ -15,3 +15,4 @@ gem 'virtus'
 gem 'racksh', group: :development
 
 gem 'factory_girl', group: :test
+gem 'rack-test', group: :test

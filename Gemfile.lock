@@ -60,6 +60,7 @@ DEPENDENCIES
   factory_girl
   orientdb-binary
   rack-flash3
+  rack-test
   racksh
   sinatra
   veto
