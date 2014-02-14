@@ -1,5 +1,5 @@
 module Oriental
-  module Criteria
+  module Builder
     module Collection
       def where(*args)
         or_conditions = []
@@ -24,34 +24,34 @@ module Oriental
       end
 
       def first
-        order rid: :asc
+        order :@rid => :asc, name: :asc
         limit 1
-        #execute
+        super
       end
 
       def last
-        order rid: :desc
+        order :@rid => :desc
         limit 1
-        #execute
+        super
       end
 
       def order(arg)
-        criteria[:order] = arg
+        criteria[:order] << arg
         self
       end
 
       def limit(num)
-        criteria[:limit] = num
+        criteria[:limit] << num
         self
       end
-      
+
       def group_by(field)
         criteria[:group] << field
         self
       end
 
       def skip(num)
-        criteria[:skip] = num
+        criteria[:skip] << num
         self
       end
 
@@ -60,17 +60,17 @@ module Oriental
       def parse_key_val(key, value)
         op = operator_for key
 
-        key, value = value.shift if op      
+        key, value = value.shift if op
         _op, value = parse_value(value)
-        
-        op ||= _op      
+
+        op ||= _op
         return op, key, value
       end
 
       def operator_for(key)
         operators = [
           "$like", "$is", "=", ">", ">=", "<", "<=", "<>",
-          "$between", "$in", "$instanceof", "$contains", 
+          "$between", "$in", "$instanceof", "$contains",
           "$constainsall", "$containskey", "$containsvalue",
           "$containstext", "$matches"
         ]
