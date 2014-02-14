@@ -1,11 +1,13 @@
 require 'bcrypt'
 
 class User
-  include Oriental::Graph::Edge
+  include Oriental::Graph::Vertex
+  include Oriental::Graph::X
 
   attr_accessor :password, :password_confirmation
 
-  attribute :rid, String
+  attribute :rid, Oriental::Rid
+  attribute :name, String
   attribute :username, String
   attribute :crypted_pass, String
   attribute :email, String
@@ -50,5 +52,5 @@ class User
     u = find_by(name: username)
     u && u.authenticate(password) ? u : nil
   end
-    
+
 end

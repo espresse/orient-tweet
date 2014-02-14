@@ -10,9 +10,17 @@ module Oriental
 
     module InstanceMethods
       def initialize(record = {})
-        self.rid = record[:@rid]
-        self.username = record[:name]
-        self.crypted_pass = record[:password]
+        # self.rid = Oriental::RecordId(record[:@rid])
+        record[:properties] = record.clone
+        map = record.map do |k, v|
+          if k.to_s[0] == "@"
+            [k.to_s[1..-1].to_sym, v]
+          else
+            [k, v]
+          end
+        end
+        record = Hash[map]
+        super(record)
       end
 
       def new?
@@ -35,13 +43,6 @@ module Oriental
         end
       end
 
-      def find
-      end
-
-      def where(params)
-      end
-
-
       def valid?(entity=nil)
         super self
       end
@@ -50,7 +51,7 @@ module Oriental
 
       def call_before_actions_for(name)
         before_actions = self.class.before_actions(name)
-        
+
         before_actions.each { |action| p action; action.is_a?(Proc) ? action.call : self.send(action) } if before_actions and not before_actions.empty?
       end
     end
@@ -72,15 +73,22 @@ module Oriental
         @before_actions[name] if @before_actions
       end
 
-      # find_by(username: 'xxx')
       def find_by(params)
-        builder = QueryBuilder.new(self).find_by(params)
-        entity = ::Database.instance.database.query builder[:query], builder[:params], builder[:prefetch]
-        obj = OrientdbBinary::Parser::Deserializer.new.deserialize_document(entity[:collection][0][:record_content])
-        
-        obj[:@rid] = "#{entity[:collection][0][:cluster_id]}:#{entity[:collection][0][:position]}"
-        
+        Oriental::Criteria.new(self).find_by(params)
       end
+
+      def find(obj)
+        Oriental::Criteria.new(self).find(obj)
+      end
+
+      def where(params)
+        Oriental::Criteria.new(self).where(params)
+      end
+
+      def insert
+        Oriental::Criteria.new(self).insert
+      end
+
     end
 
   end
