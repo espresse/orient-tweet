@@ -40,6 +40,10 @@ module Oriental
         params.each do |key, val|
           if val.is_a? Array
             val = val.map {|v| v.is_a?(RecordId) ? v.to_s : v}
+          elsif val.is_a? Set
+            res = ""
+            val.each { |v| res += v.is_a?(RecordId) ? v.to_s : v }
+            val = "set(#{res})"
           else
             val = val.is_a?(RecordId) ? val.to_s : val
           end
