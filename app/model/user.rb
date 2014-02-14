@@ -2,7 +2,7 @@ require 'bcrypt'
 
 class User
   include Oriental::Graph::Vertex
-  include Oriental::Graph::X
+  include Oriental::Attributes::Properties
 
   attr_accessor :password, :password_confirmation
 
