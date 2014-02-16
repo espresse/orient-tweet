@@ -9,7 +9,7 @@ module Oriental
     end
 
     def parse_rid(rid)
-      match = rid.match(/#*(?<cluster>\d+):(?<position>\d+)/)
+      match = rid.match(/#*(?<cluster>-?\d+):(?<position>\d+)/)
       @cluster = match[:cluster].to_i
       @position = match[:position].to_i
       self
@@ -38,9 +38,14 @@ module Oriental
       self.extend(Virtus.model)
       record.each do |k, v|
         k = k.to_s[1..-1].to_sym if k.to_s[0] == "@"
+        k = :klass if k == :class
         self.attribute k, v.class unless [:class].include? k
       end
       super(record)
+    end
+
+    def self.returns_anything?
+      true
     end
   end
 
