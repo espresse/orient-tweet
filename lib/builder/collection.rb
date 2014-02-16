@@ -24,7 +24,7 @@ module Oriental
       end
 
       def first
-        order :@rid => :asc, name: :asc
+        order :@rid => :asc
         limit 1
         super
       end
