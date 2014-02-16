@@ -6,8 +6,6 @@ class User
 
   attr_accessor :password, :password_confirmation
 
-  attribute :rid, Oriental::Rid
-  attribute :klass, String
   attribute :name, String
   attribute :username, String
   attribute :crypted_pass, String
