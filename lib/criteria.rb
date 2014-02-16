@@ -33,7 +33,7 @@ module Oriental
       @klass = klass
       @criteria = crit
       @query_command = false
-      @return_class_records_only = true
+      @return_class_records_only = !klass.returns_anything?
     end
   end
 
