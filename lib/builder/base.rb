@@ -81,9 +81,9 @@ module Oriental
         collection.each do |record|
           res = OrientdbBinary::Parser::Deserializer.new.deserialize_document(record[:record_content])
           res[:@rid] = "##{record[:cluster_id]}:#{record[:position]}"
-          
+
+          name = res[:@class] || res[:class]
           unless @return_class_records_only
-            name = res[:class]
             if name
               constant = Object
               constant = constant.const_defined?(name) ? constant.const_get(name) : Oriental::Record
@@ -93,8 +93,7 @@ module Oriental
             return block.call(constant.new(res))
           end
 
-          if res[:class].to_s == @klass.to_s
-            name = res[:class]
+          if name == @klass.to_s
             constant = Object
             constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
 
