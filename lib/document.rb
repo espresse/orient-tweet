@@ -10,12 +10,16 @@ module Oriental
 
     module InstanceMethods
       def initialize(record = {})
-        # self.rid = Oriental::RecordId(record[:@rid])
+        if Oriental::RecordId.new(record[:@rid]).cluster < 0
+          record.delete(:@rid)
+        end
         record[:properties] = record.clone
         map = record.map do |k, v|
           if k.to_s[0] == "@"
-            [k.to_s[1..-1].to_sym, v]
+            [k.to_s[1..-1].to_sym, v]            
           else
+            k = :klass if k == :class
+            v = Oriental::RecordId.new(v) if k == :rid
             [k, v]
           end
         end
@@ -87,6 +91,14 @@ module Oriental
 
       def insert
         Oriental::Criteria.new(self).insert
+      end
+
+      def select(*fields)
+        Oriental::Criteria.new(self).select(fields)
+      end
+
+      def returns_anything?
+        true
       end
 
     end
