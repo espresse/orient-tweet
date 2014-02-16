@@ -25,7 +25,8 @@ module Oriental
       end
 
       def select_query
-        criteria[:query] = '' unless criteria[:query]
+        criteria[:fields] += ['@rid, @class'] unless criteria[:fields].empty?
+        criteria[:query] = criteria[:fields].join(', ')
         criteria[:target] << @klass if criteria[:target].empty?
         criteria[:where] = criteria[:conditions].join(' AND ')
         [

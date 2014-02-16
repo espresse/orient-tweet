@@ -2,7 +2,7 @@ module Oriental
   module Builder
     module Base
       def select(*fields)
-        criteria[:query] = fields.join(', ')
+        criteria[:fields] += fields
         self
       end
 
@@ -81,17 +81,20 @@ module Oriental
         collection.each do |record|
           res = OrientdbBinary::Parser::Deserializer.new.deserialize_document(record[:record_content])
           res[:@rid] = "##{record[:cluster_id]}:#{record[:position]}"
-
+          
           unless @return_class_records_only
-            name = res[:@class]
-            constant = Object
-            constant = constant.const_defined?(name) ? constant.const_get(name) : Oriental::Record
-
+            name = res[:class]
+            if name
+              constant = Object
+              constant = constant.const_defined?(name) ? constant.const_get(name) : Oriental::Record
+            else
+              constant = Oriental::Record
+            end
             return block.call(constant.new(res))
           end
 
-          if res[:@class].to_s == @klass.to_s
-            name = res[:@class]
+          if res[:class].to_s == @klass.to_s
+            name = res[:class]
             constant = Object
             constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
 
