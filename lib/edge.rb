@@ -6,6 +6,7 @@ module Oriental
         base.include(Veto.validator)
         base.extend(Oriental::Document::ClassMethods)
         base.include(Oriental::Document::InstanceMethods)
+        base.include(Oriental::Attributes::Base)
       end
     end
   end
