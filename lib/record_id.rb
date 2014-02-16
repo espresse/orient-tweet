@@ -29,25 +29,5 @@ module Oriental
       value.is_a?(::String) ? Oriental::RecordId.new(value) : value
     end
   end
-
-  class Record
-    include Oriental::Document
-    attribute :rid, Oriental::Rid
-
-    def initialize(record = {})
-      self.extend(Virtus.model)
-      record.each do |k, v|
-        k = k.to_s[1..-1].to_sym if k.to_s[0] == "@"
-        k = :klass if k == :class
-        self.attribute k, v.class unless [:class].include? k
-      end
-      super(record)
-    end
-
-    def self.returns_anything?
-      true
-    end
-  end
-
 end
 
