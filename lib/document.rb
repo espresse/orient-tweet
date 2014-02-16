@@ -2,28 +2,28 @@ module Oriental
   module Document
 
     def self.included(base)
-        base.extend(ClassMethods)
         base.include(Virtus.model)
+        base.extend(ClassMethods)
         base.include(Veto.validator)
         base.include(InstanceMethods)
+        base.include(Oriental::Attributes::Base)
     end
 
     module InstanceMethods
       def initialize(record = {})
-        if Oriental::RecordId.new(record[:@rid]).cluster < 0
-          record.delete(:@rid)
-        end
-        record[:properties] = record.clone
-        map = record.map do |k, v|
-          if k.to_s[0] == "@"
-            [k.to_s[1..-1].to_sym, v]            
-          else
+        unless record.empty?
+          if Oriental::RecordId.new(record[:@rid]).cluster < 0
+            record.delete(:@rid)
+          end
+          record[:properties] = record.clone
+          map = record.map do |k, v|
+            k = k.to_s[1..-1].to_sym if k.to_s[0] == "@"
             k = :klass if k == :class
             v = Oriental::RecordId.new(v) if k == :rid
             [k, v]
           end
+          record = Hash[map]
         end
-        record = Hash[map]
         super(record)
       end
 
@@ -98,7 +98,7 @@ module Oriental
       end
 
       def returns_anything?
-        true
+        false
       end
 
     end
